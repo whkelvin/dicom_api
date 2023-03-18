@@ -3,8 +3,10 @@ module github.com/whkelvin/dicom_api
 go 1.19
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/labstack/gommon v0.4.0
+	github.com/suyashkumar/dicom v1.0.6
 )
 
 require (
