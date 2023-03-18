@@ -5,6 +5,6 @@ type Response struct {
   TagName string `json:"tagName"`
   VR string `json:"vr"`
   VRRaw string `json:"vrRaw"`
-  VL string `json:"vl"`
+  VL uint32 `json:"vl"`
   Value string `json:"value"`
 }
