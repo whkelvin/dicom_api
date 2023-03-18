@@ -1,5 +1,10 @@
 package models
 
 type Response struct{
-  PlaceHolder string
+  Tag string
+  TagName string
+  VR string
+  VRRaw string
+  VL uint32
+  Value string
 }
