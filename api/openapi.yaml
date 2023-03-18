@@ -1,0 +1,72 @@
+openapi: 3.0.0
+servers:
+  - url: "http://localhost:1323"
+info:
+  description: Dicom API
+  version: 1.0.0
+  title: Dicom API
+tags:
+  - name: dicom
+    description: "Dicom API"
+paths:
+  /dicom:
+    post:
+      tags:
+        - dicom
+      summary: create a new example
+      description: create a new example
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file: 
+                  type: object
+                  description: dicom file
+                  properties: {}
+            encoding:
+              file:
+                contentType: application/dicom
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostDicomResponse"
+        "400": 
+          description: Invalid Input
+        "404":
+          description: Tag Element Not Found
+
+    parameters:
+      - name: 'tag'
+        in: 'query'
+        schema:
+          type: 'string'
+        required: true
+        description: Tag to query for in the dicom file in the format of '(1234, 1f21)'
+        example: '(1234, 2123)'
+
+externalDocs:
+  description: Find out more about Open API specification
+  url: "https://swagger.io/specification/"
+components:
+  schemas:
+    PostDicomResponse:
+      type: object
+      properties:
+        tag:
+          type: string
+        tagName:
+          type: string
+        vr:
+          type: string
+        vrRaw:
+          type: string
+        vl:
+          type: integer
+          format: int32
+        value:
+          type: string
