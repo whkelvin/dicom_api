@@ -3,7 +3,7 @@ package main
 import (
   "github.com/labstack/echo/v4"
   "github.com/labstack/gommon/log"
-  "github.com/whkelvin/dicom_api/pkg/api/routes"
+  "github.com/whkelvin/dicom_api/pkg/routes"
 )
 
 func main() {
