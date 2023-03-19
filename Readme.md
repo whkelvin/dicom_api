@@ -3,7 +3,8 @@
 - Add in proper logging middleware
 - Authentication is not implemented
 - Currently dicom file and generated png are stored in `assets/uploaded`, relationships between dicom and pngs are not stored anywhere (which pngs are generated from which dicom file).
-- Tests are incomplete/incomprehensive, `cmd/test/controller_test.go` only shows that mock testing is easy because layers are loosely coupled and dependant on interfaces.
+- Storage Path are hardcoded in the code at the moment. Config should be set up properly to handle config values/env variables.
+- Tests are incomplete/incomprehensive, `cmd/test/controller_test.go` only shows that mock testing is easy because layers are loosely coupled and dependent on interfaces.
 
 # Running the app
 
@@ -14,3 +15,7 @@
 ## Run Tests
 
 `go test -v ./cmd/test/`
+
+### Architecture
+
+The project structure is based on a mix of Clean Arch/Onion Arch and Vertical Slices Arch. I've combined my favorite features of the two architectures where CA focuses on making horizontal layers loosely coupled and VSA focuses on making features isolated from one another and preventing merge conflicts when multiple devs are working on the same project.
