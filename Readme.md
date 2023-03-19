@@ -16,6 +16,10 @@
 
 `go test -v ./cmd/test/`
 
-### Architecture
+# API Interface
+
+Open API Specification is included in `/api`. You can see a webview of the spec by pasting the content of the spec [here](https://editor.swagger.io/)
+
+# Architecture
 
 The project structure is based on a mix of Clean Arch/Onion Arch and Vertical Slices Arch. I've combined my favorite features of the two architectures where CA focuses on making horizontal layers loosely coupled and VSA focuses on making features isolated from one another and preventing merge conflicts when multiple devs are working on the same project.
