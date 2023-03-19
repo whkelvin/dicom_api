@@ -61,7 +61,17 @@ func parseTag(tag string) (uint16, uint16){
   return group16, element16
 }
 
-func PostDicom(c echo.Context) error {
+type PostDicomController struct {
+  Echo *echo.Echo
+  Handler handler.IPostDicomHandler
+  Route string
+}
+
+func (controller *PostDicomController) Init(){
+  controller.Echo.POST(controller.Route, controller.PostDicom)
+}
+
+func (controller *PostDicomController) PostDicom(c echo.Context) error {
   req, err := parsePostDicomRequest(c)
   if(err != nil){
     return c.String(http.StatusBadRequest, fmt.Sprintf("%s", err))
@@ -74,7 +84,7 @@ func PostDicom(c echo.Context) error {
     File: req.File,
   }
 
-  handlerRes, err := handler.PostDicomHandler(handlerReq)
+  handlerRes, err := controller.Handler.PostDicom(handlerReq)
   if(err != nil){
     return c.String(http.StatusInternalServerError, "post dicom file failed.")
   }

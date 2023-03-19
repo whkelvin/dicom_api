@@ -9,10 +9,16 @@ import (
   "github.com/suyashkumar/dicom/pkg/tag"
   . "github.com/whkelvin/dicom_api/pkg/features/post_dicom/services/dicom_service/models"
   "github.com/google/uuid"
-  "github.com/labstack/gommon/log"
 )
 
-func GetTagElement(dicomFilePath string, group uint16, element uint16) (*DicomElement){
+type IDicomService interface {
+  GetTagElement(dicomFilePath string, group uint16, element uint16) (*DicomElement)
+  SaveAsPngs(dicomFilePath string) error
+}
+
+type DicomService struct{}
+
+func (service *DicomService) GetTagElement(dicomFilePath string, group uint16, element uint16) (*DicomElement){
   content, _ := dicom.ParseFile(dicomFilePath, nil)
 
   var t tag.Tag = tag.Tag{Group: group, Element: element}
@@ -39,12 +45,9 @@ func GetTagElement(dicomFilePath string, group uint16, element uint16) (*DicomEl
   return dicomElement
 }
 
-func SaveAsPngs(dicomFilePath string) error {
-  log.Error("saving png..")
-  log.Error(dicomFilePath)
+func (service *DicomService) SaveAsPngs(dicomFilePath string) error {
   dataset, err := dicom.ParseFile(dicomFilePath, nil)
   if(err != nil){
-    log.Error("cannot parse dicom file")
     return errors.New("cannot parse dicom file.")
   }
 
@@ -58,13 +61,10 @@ func SaveAsPngs(dicomFilePath string) error {
 
   for _, fr := range pixelDataInfo.Frames {
     img, err := fr.GetImage()
-    log.Error("getting image")
     if err == nil {
       f, err := os.Create(fmt.Sprintf("/home/whkelvin/Projects/golang/dicom_api/assets/uploaded/png/%v.png", uuid))
-      log.Error("creating png")
       if err == nil {
         png.Encode(f, img)
-        log.Error("saving png")
       }
       f.Close()
     }

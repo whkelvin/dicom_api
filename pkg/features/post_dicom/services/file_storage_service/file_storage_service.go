@@ -10,7 +10,13 @@ import (
   "path/filepath"
 )
 
-func SaveFile(file *multipart.FileHeader) (string, error) {
+type IFileStorageService interface {
+  SaveFile(file *multipart.FileHeader) (string, error)
+}
+
+type FileStorageService struct {}
+
+func (service *FileStorageService) SaveFile(file *multipart.FileHeader) (string, error) {
   src, err := file.Open()
   if(err!= nil){
     return "", errors.New("saving file failed.")

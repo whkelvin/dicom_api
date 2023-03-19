@@ -3,7 +3,7 @@ package main
 import (
   "github.com/labstack/echo/v4"
   "github.com/labstack/gommon/log"
-  "github.com/whkelvin/dicom_api/pkg/routes"
+  "github.com/whkelvin/dicom_api/pkg/features"
 )
 
 func main() {
@@ -11,8 +11,9 @@ func main() {
 
   log.SetLevel(log.DEBUG)
   log.SetHeader("${time_rfc3339} ${level}")
-
-  routes.Init(e)
+  
+  features.Init(e)
 
   e.Logger.Fatal(e.Start(":1323"))
 }
+

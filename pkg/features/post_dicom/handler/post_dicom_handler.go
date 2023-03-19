@@ -2,21 +2,28 @@ package handler
 
 import (
   "errors"
-  fileStorageService "github.com/whkelvin/dicom_api/pkg/features/post_dicom/services/file_storage_service"
+  . "github.com/whkelvin/dicom_api/pkg/features/post_dicom/services/file_storage_service"
   . "github.com/whkelvin/dicom_api/pkg/features/post_dicom/handler/models"
-  dicomService "github.com/whkelvin/dicom_api/pkg/features/post_dicom/services/dicom_service"
-  "github.com/labstack/gommon/log"
+  . "github.com/whkelvin/dicom_api/pkg/features/post_dicom/services/dicom_service"
 )
 
-func PostDicomHandler(req Request) (*Response, error) {
+type IPostDicomHandler interface {
+  PostDicom(req Request) (*Response, error)
+}
 
-  path, err := fileStorageService.SaveFile(req.File)
+type PostDicomHandler struct {
+  FileStorageService IFileStorageService
+  DicomService IDicomService
+}
+
+func (handler *PostDicomHandler) PostDicom(req Request) (*Response, error) {
+
+  path, err := handler.FileStorageService.SaveFile(req.File)
   if(err != nil){
-    log.Error("saving file failed.")
     return nil, errors.New("saving file failed.")
   }
 
-  result := dicomService.GetTagElement(path, req.TagGroup, req.TagElement)
+  result := handler.DicomService.GetTagElement(path, req.TagGroup, req.TagElement)
   if(result == nil){
     return nil, nil
   }
@@ -30,9 +37,8 @@ func PostDicomHandler(req Request) (*Response, error) {
     Value:result.Value,
   }
 
-  err = dicomService.SaveAsPngs(path)
+  err = handler.DicomService.SaveAsPngs(path)
   if(err != nil){
-    log.Error("saving pngs failed.")
     return nil, errors.New("saving pngs failed.")
   }
 
